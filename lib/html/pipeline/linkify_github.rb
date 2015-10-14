@@ -6,80 +6,84 @@ module HTML
     #
     # For example:
     #
-    #   https://github.com/rails/rails/pull/21862
-    #   https://github.com/rails/rails/issues/21843
-    #   https://github.com/rails/rails/commit/67597e1719ec6af7e22964603cc77aa5b085a864
+    #   <a href="https://github.com/rails/rails/pull/21862">https://github.com/rails/rails/pull/21862</a>
+    #   <a href="https://github.com/rails/rails/issues/21843">https://github.com/rails/rails/issues/21843</a>
+    #   <a href="https://github.com/rails/rails/commit/67597e1719ec6af7e22964603cc77aa5b085a864">https://github.com/rails/rails/commit/67597e1719ec6af7e22964603cc77aa5b085a864</a>
     #
     #   =>
     #
-    #   [rails/rails#21862](https://github.com/rails/rails/pull/21862)
-    #   [rails/rails#21843](https://github.com/rails/rails/issues/21843)
-    #   [rails/rails@`67597e`](https://github.com/rails/rails/commit/67597e1719ec6af7e22964603cc77aa5b085a864)
+    #   <a href="https://github.com/rails/rails/pull/21862">rails/rails#21862</a>
+    #   <a href="https://github.com/rails/rails/issues/21843">rails/rails#21843</a>
+    #   <a href="https://github.com/rails/rails/commit/67597e1719ec6af7e22964603cc77aa5b085a864">rails/rails@`67597e`</a>
     #
     # This filter does not write any additional information to the context hash.
-    class LinkifyGitHubFilter < TextFilter
-      GITHUB_URL = "github.com".freeze
-      PULL = "/pull/".freeze
-      ISSUES = "/issues/".freeze
-      COMMIT = "/commit/".freeze
-
+    class LinkifyGitHubFilter < Filter
       PULL_REQUEST_REGEXP = %r{https?://(www.)?github.com/(?<owner>.+)/(?<repo>.+)/pull/(?<number>\d+)/?}.freeze
       ISSUES_REGEXP = %r{https?://(www.)?github.com/(?<owner>.+)/(?<repo>.+)/issues/(?<number>\d+)/?}.freeze
       COMMIT_REGEXP = %r{https?://(www.)?github.com/(?<owner>.+)/(?<repo>.+)/commit/(?<number>\w+)/?}.freeze
 
-      # Convert GitHub urls into friendly markdown.
       def call
-        return @text unless @text.include?(GITHUB_URL)
+        doc.search("a").each do |element|
+          next if element["href"].to_s.empty?
 
-        replace_pull_request_links if has_pull_request_link?
-        replace_issue_links if has_issue_link?
-        replace_commit_links if has_commit_link?
+          text = element.content
 
-        @text
+          element.content = if is_a_pull_request_link? text
+            replace_pull_request_link(text)
+          elsif is_a_issue_link? text
+            replace_issue_link(text)
+          elsif is_a_commit_link? text
+            replace_commit_link(text)
+          else
+            text
+          end
+        end
+
+        doc
       end
 
       private
 
-        def has_pull_request_link?
-         @text.include?(PULL)
+        def is_a_pull_request_link?(text)
+          text.include?("/pull/".freeze)
         end
 
-        def has_issue_link?
-          @text.include?(ISSUES)
+        def is_a_issue_link?(text)
+          text.include?("/issues/".freeze)
         end
 
-        def has_commit_link?
-          @text.include?(COMMIT)
+        def is_a_commit_link?(text)
+          text.include?("/commit/".freeze)
         end
 
-        def replace_pull_request_links
-          @text.gsub!(PULL_REQUEST_REGEXP) do
-            pull_request_markdown($1, $2, $3) if [$1, $2, $3].all?(&:present?)
+        def replace_pull_request_link(text)
+          text.match(PULL_REQUEST_REGEXP) do
+            pull_request_shorthand($1, $2, $3)
           end
         end
 
-        def replace_issue_links
-          @text.gsub!(ISSUES_REGEXP) do
-            issue_markdown($1, $2, $3) if [$1, $2, $3].all?(&:present?)
+        def replace_issue_link(text)
+          text.match(ISSUES_REGEXP) do
+            issue_shorthand($1, $2, $3)
           end
         end
 
-        def replace_commit_links
-          @text.gsub!(COMMIT_REGEXP) do
-            commit_markdown($1, $2, $3) if [$1, $2, $3].all?(&:present?)
+        def replace_commit_link(text)
+          text.match(COMMIT_REGEXP) do
+            commit_shorthand($1, $2, $3)
           end
         end
 
-        def pull_request_markdown(repo, owner, number)
-          "[#{repo}/#{owner}##{number}](https://github.com/#{repo}/#{owner}/pull/#{number})"
+        def pull_request_shorthand(repo, owner, number)
+          "#{repo}/#{owner}##{number}"
         end
 
-        def issue_markdown(repo, owner, number)
-          "[#{repo}/#{owner}##{number}](https://github.com/#{repo}/#{owner}/issues/#{number})"
+        def issue_shorthand(repo, owner, number)
+          "#{repo}/#{owner}##{number}"
         end
 
-        def commit_markdown(repo, owner, number)
-          "[#{repo}/#{owner}@`#{number[0..6]}`](https://github.com/#{repo}/#{owner}/commit/#{number})"
+        def commit_shorthand(repo, owner, number)
+          "#{repo}/#{owner}@`#{number[0..5]}`"
         end
     end
   end

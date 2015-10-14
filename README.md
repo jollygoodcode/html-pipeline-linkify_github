@@ -21,32 +21,32 @@ Or install it yourself as:
 
 ## Usage
 
-**Use `HTML::Pipeline::LinkifyGitHubFilter` filter before your markdown filter.**
+**Use `HTML::Pipeline::LinkifyGitHubFilter` filter after your markdown filter.**
 
 ```ruby
 require "html/pipeline"
 require "html/pipeline/linkify_github"
 
 pipeline = HTML::Pipeline.new [
-  HTML::Pipeline::LinkifyGitHubFilter,
-  HTML::Pipeline::MarkdownFilter
+  HTML::Pipeline::MarkdownFilter,
+  HTML::Pipeline::LinkifyGitHubFilter
 ]
 
-result = pipeline.call <<-CODE
+result = pipeline.call <<-MARKDOWN.strip_heredoc
   https://github.com/rails/rails/pull/21862
   https://github.com/rails/rails/issues/21843
   https://github.com/rails/rails/commit/67597e1719ec6af7e22964603cc77aa5b085a864
-CODE
+MARKDOWN
 
-puts result[:output]
+puts result[:output].to_html
 ```
 
 prints:
 
-```markdown
-  [rails/rails#21862](https://github.com/rails/rails/pull/21862)
-  [rails/rails#21843](https://github.com/rails/rails/issues/21843)
-  [rails/rails@`67597e1`](https://github.com/rails/rails/commit/67597e1719ec6af7e22964603cc77aa5b085a864)
+```html
+<p><a href="https://github.com/rails/rails/pull/21862">rails/rails#21862</a><br>
+<a href="https://github.com/rails/rails/issues/21843">rails/rails#21843</a><br>
+<a href="https://github.com/rails/rails/commit/67597e1719ec6af7e22964603cc77aa5b085a864">rails/rails@`67597e`</a></p>
 ```
 
 ## Notes

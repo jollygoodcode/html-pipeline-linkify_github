@@ -7,6 +7,7 @@ group :development do
   gem "rake"
   gem "bundler"
   gem "pry"
+  gem "github-markdown"
 end
 
 group :test do
