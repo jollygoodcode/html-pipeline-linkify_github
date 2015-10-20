@@ -24,11 +24,12 @@ module HTML
 
       def call
         doc.search("a").each do |element|
+          next if element.blank? || element.comment?
           next if element["href"].to_s.empty?
 
-          text = element.content
+          text = element.inner_html
 
-          element.content = if is_a_pull_request_link? text
+          element.inner_html = if is_a_pull_request_link? text
             replace_pull_request_link(text)
           elsif is_a_issue_link? text
             replace_issue_link(text)
@@ -57,19 +58,19 @@ module HTML
         end
 
         def replace_pull_request_link(text)
-          text.match(PULL_REQUEST_REGEXP) do
+          text.gsub(PULL_REQUEST_REGEXP) do
             pull_request_shorthand($1, $2, $3)
           end
         end
 
         def replace_issue_link(text)
-          text.match(ISSUES_REGEXP) do
+          text.gsub(ISSUES_REGEXP) do
             issue_shorthand($1, $2, $3)
           end
         end
 
         def replace_commit_link(text)
-          text.match(COMMIT_REGEXP) do
+          text.gsub(COMMIT_REGEXP) do
             commit_shorthand($1, $2, $3)
           end
         end
