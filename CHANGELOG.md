@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.0.2 - 2015.10.20
+
 - Fix children tags got removed when converting urls. [#4](https://github.com/jollygoodcode/html-pipeline-linkify_github/pull/4)
 
 ## 1.0.1 - 2015.10.15
