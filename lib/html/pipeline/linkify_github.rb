@@ -84,7 +84,7 @@ module HTML
         end
 
         def commit_shorthand(repo, owner, number)
-          "#{repo}/#{owner}@`#{number[0..5]}`"
+          "#{repo}/#{owner}@<code>#{number[0..5]}</code>"
         end
     end
   end

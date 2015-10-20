@@ -46,7 +46,7 @@ class HTML::Pipeline::LinkifyGitHubTest < Minitest::Test
     doc  = Nokogiri::HTML::DocumentFragment.parse(body)
 
     res = filter(doc)
-    assert_equal_html %Q(<a href="#{commit_url}">rails/rails@`67597e`</a>),
+    assert_equal_html %Q(<a href="#{commit_url}">rails/rails@<code>67597e</code></a>),
                       res.to_html
   end
 end

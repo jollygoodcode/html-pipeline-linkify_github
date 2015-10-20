@@ -18,7 +18,7 @@ class HTML::Pipeline::LinkifyGitHubIntegrationTest < Minitest::Test
       https://github.com/rails/rails/commit/67597e1719ec6af7e22964603cc77aa5b085a864
     MARKDOWN
 
-    assert_equal "<p><a href=\"https://github.com/rails/rails/pull/21862\">rails/rails#21862</a><br>\n<a href=\"https://github.com/rails/rails/issues/21843\">rails/rails#21843</a><br>\n<a href=\"https://github.com/rails/rails/commit/67597e1719ec6af7e22964603cc77aa5b085a864\">rails/rails@`67597e`</a></p>",
+    assert_equal "<p><a href=\"https://github.com/rails/rails/pull/21862\">rails/rails#21862</a><br>\n<a href=\"https://github.com/rails/rails/issues/21843\">rails/rails#21843</a><br>\n<a href=\"https://github.com/rails/rails/commit/67597e1719ec6af7e22964603cc77aa5b085a864\">rails/rails@<code>67597e</code></a></p>",
                  result[:output].to_html
   end
 
