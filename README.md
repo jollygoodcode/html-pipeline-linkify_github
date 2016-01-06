@@ -1,5 +1,6 @@
 # HTML::Pipeline::LinkifyGitHub 
 
+[![Gem Version](https://badge.fury.io/rb/html-pipeline-linkify_github.svg)](https://badge.fury.io/rb/html-pipeline-linkify_github)
 [![Build Status](https://travis-ci.org/jollygoodcode/html-pipeline-linkify_github.svg)](https://travis-ci.org/jollygoodcode/html-pipeline-linkify_github)
 [![Code Climate](https://codeclimate.com/github/jollygoodcode/html-pipeline-linkify_github/badges/gpa.svg)](https://codeclimate.com/github/jollygoodcode/html-pipeline-linkify_github)
 
