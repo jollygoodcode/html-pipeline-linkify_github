@@ -1,4 +1,7 @@
-# HTML::Pipeline::LinkifyGitHub [![Build Status](https://travis-ci.org/jollygoodcode/html-pipeline-linkify_github.svg)](https://travis-ci.org/jollygoodcode/html-pipeline-linkify_github)
+# HTML::Pipeline::LinkifyGitHub 
+
+[![Build Status](https://travis-ci.org/jollygoodcode/html-pipeline-linkify_github.svg)](https://travis-ci.org/jollygoodcode/html-pipeline-linkify_github)
+[![Code Climate](https://codeclimate.com/github/jollygoodcode/html-pipeline-linkify_github/badges/gpa.svg)](https://codeclimate.com/github/jollygoodcode/html-pipeline-linkify_github)
 
 `HTML::Pipeline::LinkifyGitHub` provides a [HTML::Pipeline](https://github.com/jch/html-pipeline)
 filter to autolink GitHub urls.
