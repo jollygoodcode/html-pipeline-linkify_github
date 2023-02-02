@@ -13,10 +13,14 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/juanitofatas/html-pipeline-linkify_github"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files -z`.split("\x0")
+  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
+    f=~ %r{^(test)/ }
+  end
+
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "html-pipeline", ">= 1.11"
+  spec.add_dependency "html-pipeline", ">= 2.10"
+  spec.add_dependency "commonmarker", ">= 0.20"
 
-  spec.required_ruby_version = "~> 2.0"
+  spec.required_ruby_version = ">= 2.7"
 end
