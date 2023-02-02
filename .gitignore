@@ -8,7 +8,9 @@
 /spec/reports/
 /tmp/
 *.bundle
+*.gem
 *.so
 *.o
 *.a
+*.ruby-version
 mkmf.log
